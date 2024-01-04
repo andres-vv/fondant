@@ -23,7 +23,8 @@ class TestIndexAWSOpenSearchComponent:
         mocker.patch("src.main.boto3.Session")
 
         # Mock OpenSearch
-        mock_opensearch_instance = mocker.patch("src.main.OpenSearch").return_value
+        mock_opensearch_instance = mocker.patch(
+            "src.main.OpenSearch").return_value
         mock_opensearch_instance.indices.exists.return_value = False
 
         # Create IndexAWSOpenSearchComponent instance
@@ -49,7 +50,8 @@ class TestIndexAWSOpenSearchComponent:
         mocker.patch("src.main.boto3.Session")
 
         # Mock OpenSearch
-        mock_opensearch_instance = mocker.patch("src.main.OpenSearch").return_value
+        mock_opensearch_instance = mocker.patch(
+            "src.main.OpenSearch").return_value
         mock_opensearch_instance.indices.exists.return_value = True
 
         pandas_df = pd.DataFrame(

@@ -111,18 +111,18 @@ class Executor(t.Generic[Component]):
     def from_args(cls) -> "Executor":
         """Create an executor from a passed argument containing the specification as a dict."""
         parser = argparse.ArgumentParser()
-        parser.add_argument("--operation_spec", type=json.loads)
+        parser.add_argument("--component_spec", type=json.loads)
         parser.add_argument("--cache", type=lambda x: bool(strtobool(x)))
         parser.add_argument("--input_partition_rows", type=int)
         parser.add_argument("--cluster_type", type=str)
         parser.add_argument("--client_kwargs", type=json.loads)
         args, _ = parser.parse_known_args()
 
-        if "operation_spec" not in args:
-            msg = "Error: The --operation_spec argument is required."
+        if "component_spec" not in args:
+            msg = "Error: The --component_spec argument is required."
             raise ValueError(msg)
 
-        operation_spec = OperationSpec.from_dict(args.operation_spec)
+        operation_spec = OperationSpec.from_dict(args.component_spec)
 
         return cls.from_spec(
             operation_spec,
@@ -616,10 +616,7 @@ class ExecutorFactory:
             executor = self.component_executor_mapping[component_type].from_args()
         except KeyError:
             msg = (
-                f"The component `{self.component.__name__}` of type `{component_type}` has no"
-                f" corresponding executor.\n "
-                f"Component executor mapping:"
-                f" {json.dumps(self.component_executor_mapping, indent=4)}"
+                f"The component `{self.component.__name__}` of type `{component_type}` has no corresponding executor.\n Component executor mapping: {json.dumps(self.component_executor_mapping, indent=4)}"
             )
             raise ValueError(msg)
         return executor
